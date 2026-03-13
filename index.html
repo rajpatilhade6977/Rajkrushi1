@@ -6,155 +6,134 @@
     <title>Rajkrushi Pro - Gapak Dairy Farm</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --p: #2d6a4f; --bg: #f3f9f6; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: var(--bg); padding-bottom: 80px; }
+        :root { --p: #2d6a4f; --bg: #f8faf9; --card-shd: 0 4px 15px rgba(0,0,0,0.06); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); padding-bottom: 85px; color: #334155; }
         .hidden { display: none !important; }
 
-        /* 🟢 Premium Header */
-        header { background: var(--p); color: white; padding: 25px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .header-box { display: flex; justify-content: space-between; align-items: center; }
-        .logo-area { display: flex; align-items: center; gap: 12px; }
-        .logo-area i { font-size: 35px; color: #a3cfbb; }
-        .logo-area h1 { font-size: 22px; font-weight: 800; }
+        /* 🟢 Optimized Header */
+        header { background: var(--p); color: white; padding: 25px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; }
+        .brand h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
 
-        /* 🌦️ Weather Banner */
-        .weather-banner { background: #dbeafe; border-left: 6px solid #3b82f6; margin: 15px; padding: 15px; border-radius: 12px; display: flex; gap: 12px; align-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
-        .weather-banner i { font-size: 24px; color: #3b82f6; }
-        .weather-text { font-size: 12px; color: #1e3a8a; line-height: 1.4; }
+        /* 🌦️ Smart Weather Banner */
+        .weather-banner { background: #e0f2fe; border-left: 6px solid #0ea5e9; margin: 15px; padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 12px; }
+        .weather-banner i { font-size: 24px; color: #0ea5e9; }
+        .weather-info { font-size: 11px; color: #075985; line-height: 1.5; }
 
-        /* 🗂️ Premium Grid */
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 15px; }
-        .p-card { background: white; border-radius: 20px; padding: 25px 15px; text-align: left; position: relative; border: 1px solid #e2e8f0; transition: 0.3s; cursor: pointer; display: flex; flex-direction: column; gap: 8px; }
-        .p-card:active { transform: scale(0.96); }
-        .p-card i { font-size: 35px; margin-bottom: 10px; }
-        .p-card h3 { font-size: 14px; font-weight: 700; color: #334155; }
-        .p-card p { font-size: 10px; color: #94a3b8; }
-        .badge { background: #f1f5f9; color: #64748b; font-size: 9px; padding: 2px 8px; border-radius: 10px; width: fit-content; margin-top: 5px; }
+        /* 🗂️ High-End Cards Grid */
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 15px; }
+        .menu-card { background: white; border-radius: 20px; padding: 22px 15px; border: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--card-shd); cursor: pointer; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .menu-card:active { transform: scale(0.94); }
+        .menu-card i { font-size: 32px; margin-bottom: 5px; }
+        .menu-card h3 { font-size: 13px; font-weight: 700; }
+        .menu-card p { font-size: 9px; color: #94a3b8; }
+        .status-tag { background: #f1f5f9; color: #64748b; font-size: 8px; padding: 3px 10px; border-radius: 20px; width: fit-content; }
 
-        /* 🌈 Border Colors (Image 2 Style) */
-        .c-blue { border-left: 5px solid #3b82f6; }
-        .c-green { border-left: 5px solid #10b981; }
-        .c-purple { border-left: 5px solid #8b5cf6; }
-        .c-red { border-left: 5px solid #ef4444; }
-        .c-orange { border-left: 5px solid #f59e0b; }
-        .c-teal { border-left: 5px solid #14b8a6; }
+        /* Border Variations */
+        .b-blue { border-left: 5px solid #3b82f6; }
+        .b-green { border-left: 5px solid #10b981; }
+        .b-purple { border-left: 5px solid #8b5cf6; }
+        .b-red { border-left: 5px solid #ef4444; }
+        .b-orange { border-left: 5px solid #f59e0b; }
+        .b-teal { border-left: 5px solid #14b8a6; }
 
-        /* 📱 Bottom Navigation */
-        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-top-left-radius: 20px; border-top-right-radius: 20px; z-index: 1000; }
-        .nav-link { border: none; background: none; color: #94a3b8; font-size: 11px; text-align: center; cursor: pointer; }
-        .nav-link.active { color: var(--p); font-weight: bold; }
-        .nav-link i { font-size: 20px; margin-bottom: 4px; display: block; }
+        /* 📱 Fixed Navigation */
+        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 14px; box-shadow: 0 -5px 25px rgba(0,0,0,0.08); border-top-left-radius: 25px; border-top-right-radius: 25px; z-index: 1000; }
+        .nav-item { border: none; background: none; color: #94a3b8; font-size: 10px; text-align: center; }
+        .nav-item.active { color: var(--p); font-weight: bold; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
 
-        /* Sections */
-        .page { padding: 15px; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .box { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        input, select { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 16px; outline: none; background: #f8fafc; }
-        .btn-main { width: 100%; background: var(--p); color: white; padding: 16px; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; }
+        /* Content Sections */
+        .section { padding: 15px; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .stat-card { background: var(--p); color: white; padding: 25px; border-radius: 22px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(45,106,79,0.2); }
+        input { width: 100%; padding: 16px; margin: 12px 0; border: 1px solid #e2e8f0; border-radius: 14px; outline: none; font-size: 16px; background: #fff; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        .btn-action { width: 100%; background: var(--p); color: white; padding: 18px; border: none; border-radius: 14px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 12px rgba(45,106,79,0.3); }
     </style>
 </head>
-<body onload="startApp()">
+<body onload="initializeCore()">
 
-    <div id="setup-screen" style="padding: 60px 20px; text-align: center;">
-        <i class="fas fa-leaf" style="font-size: 60px; color: var(--p); margin-bottom: 20px;"></i>
-        <h2>राजकृषी प्रो</h2>
-        <p style="color: #64748b; margin: 10px 0 30px;">created by Rajpatil Hade</p>
-        <input type="text" id="reg-name" placeholder="तुमचे पूर्ण नाव टाका">
-        <button class="btn-main" onclick="saveName()">ॲप मध्ये प्रवेश करा</button>
-    </div>
-
-    <div id="app-main" class="hidden">
-        <header>
-            <div class="header-box">
-                <div class="logo-area">
-                    <i class="fas fa-leaf"></i>
-                    <div>
-                        <h1>राजकृषी प्रो</h1>
-                        <p style="font-size: 10px; opacity: 0.8;">created by Rajpatil Hade</p>
-                    </div>
-                </div>
-                <i class="fas fa-user-circle" style="font-size: 30px;"></i>
+    <header>
+        <div class="header-flex">
+            <div class="brand">
+                <h1>राजकृषी प्रो</h1>
+                <p style="font-size: 10px; opacity: 0.8;">by Rajpatil Hade</p>
             </div>
-        </header>
+            <i class="fas fa-circle-user" style="font-size: 32px;"></i>
+        </div>
+    </header>
 
-        <div id="home-view" class="page">
-            <div class="weather-banner">
-                <i class="fas fa-cloud-sun-rain"></i>
-                <div class="weather-text">
-                    <strong>हवामान अंदाज व काळजी:</strong><br>
-                    उद्या पावसाची शक्यता आहे. जनावरांचा चारा सुरक्षित जागी ठेवा आणि शेड कोरडे ठेवा.
-                </div>
-            </div>
-
-            <div class="grid-container">
-                <div class="p-card c-blue" onclick="openPage('animal-page')">
-                    <i class="fas fa-paw" style="color: #3b82f6;"></i>
-                    <h3>पशुपालन व्यवस्थापन</h3>
-                    <p>Cow, Buffalo, Goat</p>
-                    <div class="badge">जनावर नोंदणी, हेल्थ कार्ड</div>
-                </div>
-
-                <div class="p-card c-green" onclick="openPage('finance-page')">
-                    <i class="fas fa-chart-line" style="color: #10b981;"></i>
-                    <h3>आर्थिक व साठा</h3>
-                    <p>Finance & Stock</p>
-                    <div class="badge">खर्च डायरी, नफा-तोटा</div>
-                </div>
-
-                <div class="p-card c-purple" onclick="alert('कम्युनिटी लवकरच सुरू होत आहे!')">
-                    <i class="fas fa-users" style="color: #8b5cf6;"></i>
-                    <h3>शेतकरी फोरम</h3>
-                    <p>Community</p>
-                    <div class="badge">Like, Comment, Share</div>
-                </div>
-
-                <div class="p-card c-red" onclick="alert('तज्ज्ञ डॉक्टरांची यादी अपडेट होत आहे!')">
-                    <i class="fas fa-user-md" style="color: #ef4444;"></i>
-                    <h3>तज्ज्ञ डॉक्टर</h3>
-                    <p>Taluka Top Doctors</p>
-                    <div class="badge">WhatsApp सल्ला</div>
-                </div>
-
-                <div class="p-card c-orange" onclick="openPage('market-page')">
-                    <i class="fas fa-shopping-cart" style="color: #f59e0b;"></i>
-                    <h3>खरेदी-विक्री</h3>
-                    <p>Marketplace</p>
-                    <div class="badge">औषधे, उपकरणे</div>
-                </div>
-
-                <div class="p-card c-teal" onclick="openPage('help-page')">
-                    <i class="fas fa-info-circle" style="color: #14b8a6;"></i>
-                    <h3>मदत केंद्र</h3>
-                    <p>How to use?</p>
-                    <div class="badge">YouTube व्हिडिओ</div>
-                </div>
+    <div id="home-view" class="section">
+        <div class="weather-banner">
+            <i class="fas fa-cloud-bolt"></i>
+            <div class="weather-info">
+                <strong>हवामान सूचना:</strong><br> गोहगाव हडे परिसरात पावसाचे ढग दाटले आहेत. जनावरांच्या गोठ्याची स्वच्छता राखा.
             </div>
         </div>
 
-        <div id="finance-page" class="page hidden">
-            <button onclick="openPage('home-view')" style="border:none; background:none; color:var(--p); font-weight:bold; margin-bottom:15px;"><i class="fas fa-arrow-left"></i> मागे</button>
-            <div class="box" style="background: var(--p); color: white; text-align: center;">
-                <p style="opacity: 0.8;">एकूण दूध व कमाई</p>
-                <h2 id="total-milk" style="font-size: 32px;">० लिटर</h2>
-                <h3 id="total-cash">₹ ०</h3>
+        <div class="grid-layout">
+            <div class="menu-card b-blue" onclick="navigateTo('animal-view')">
+                <i class="fas fa-paw" style="color: #3b82f6;"></i>
+                <h3>पशुपालन</h3>
+                <p>Cow & Buffalo</p>
+                <div class="status-tag">नोंदणी व आरोग्य</div>
             </div>
-            <div class="box">
-                <label>दूध (लिटर मध्ये)</label>
-                <input type="number" id="lit-val" placeholder="उदा. १०.५">
-                <label>दर (Rate)</label>
-                <input type="number" id="rate-val" placeholder="उदा. ५०">
-                <button class="btn-main" onclick="saveMilkData()">नोंद जतन करा</button>
+            <div class="menu-card b-green" onclick="navigateTo('finance-view')">
+                <i class="fas fa-indian-rupee-sign" style="color: #10b981;"></i>
+                <h3>हिशोब डायरी</h3>
+                <p>Profit & Loss</p>
+                <div class="status-tag">दूध व खर्च</div>
+            </div>
+            <div class="menu-card b-purple" onclick="alert('फोरम लवकरच सुरू होत आहे!')">
+                <i class="fas fa-comments" style="color: #8b5cf6;"></i>
+                <h3>शेतकरी फोरम</h3>
+                <p>Community</p>
+                <div class="status-tag">चर्चा व प्रश्न</div>
+            </div>
+            <div class="menu-card b-red" onclick="alert('डॉक्टरांची यादी तयार होत आहे.')">
+                <i class="fas fa-house-medical" style="color: #ef4444;"></i>
+                <h3>तज्ज्ञ डॉक्टर</h3>
+                <p>Top Vets</p>
+                <div class="status-tag">थेट संपर्क</div>
+            </div>
+            <div class="menu-card b-orange" onclick="navigateTo('market-view')">
+                <i class="fas fa-cart-shopping" style="color: #f59e0b;"></i>
+                <h3>खरेदी-विक्री</h3>
+                <p>Marketplace</p>
+                <div class="status-tag">औषधे व खुराक</div>
+            </div>
+            <div class="menu-card b-teal" onclick="navigateTo('help-view')">
+                <i class="fas fa-play-circle" style="color: #14b8a6;"></i>
+                <h3>मदत केंद्र</h3>
+                <p>User Guide</p>
+                <div class="status-tag">व्हिडिओ ट्यूटोरियल</div>
             </div>
         </div>
-
-        <nav>
-            <button class="nav-link active" onclick="openPage('home-view')"><i class="fas fa-home"></i>मुख्यपान</button>
-            <button class="nav-item nav-link" onclick="openPage('animal-page')"><i class="fas fa-paw"></i>जनावरे</button>
-            <button class="nav-item nav-link" onclick="openPage('market-page')"><i class="fas fa-store"></i>मार्केट</button>
-            <button class="nav-item nav-link" onclick="openPage('help-page')"><i class="fas fa-question-circle"></i>मदत</button>
-        </nav>
     </div>
+
+    <div id="finance-view" class="section hidden">
+        <button onclick="navigateTo('home-view')" style="border:none; background:none; color:var(--p); font-weight:bold; margin-bottom:15px;"><i class="fas fa-chevron-left"></i> मागे</button>
+        <div class="stat-card">
+            <p style="opacity: 0.9;">एकूण दूध व कमाई</p>
+            <h2 id="disp-lit" style="font-size: 36px; margin: 5px 0;">० लिटर</h2>
+            <h3 id="disp-amt">₹ ०</h3>
+        </div>
+        <div style="background:white; padding:20px; border-radius:20px; box-shadow: var(--card-shd);">
+            <label style="font-size: 13px; font-weight: bold;">दूध (लिटर)</label>
+            <input type="number" id="in-lit" placeholder="उदा. १२.४">
+            <label style="font-size: 13px; font-weight: bold;">दर (Rate)</label>
+            <input type="number" id="in-rat" placeholder="उदा. ५५">
+            <button class="btn-action" onclick="commitMilkData()">नोंद जतन करा</button>
+        </div>
+    </div>
+
+    <nav>
+        <button class="nav-item active" onclick="navigateTo('home-view')"><i class="fas fa-grid-2"></i>मुख्य</button>
+        <button class="nav-item" onclick="navigateTo('animal-view')"><i class="fas fa-paw"></i>जनावरे</button>
+        <button class="nav-item" onclick="navigateTo('market-view')"><i class="fas fa-store"></i>मार्केट</button>
+        <button class="nav-item" onclick="navigateTo('finance-view')"><i class="fas fa-file-invoice"></i>हिशोब</button>
+    </nav>
 
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
@@ -170,46 +149,41 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        function startApp() {
-            if(localStorage.getItem('raj_auth')) {
-                document.getElementById('setup-screen').classList.add('hidden');
-                document.getElementById('app-main').classList.remove('hidden');
-            }
+        function initializeCore() {
+            console.log("Rajkrushi Pro Engine Initialized...");
+            loadRealTimeStats();
         }
 
-        function saveName() {
-            if(document.getElementById('reg-name').value) {
-                localStorage.setItem('raj_auth', 'true');
-                startApp();
-            } else { alert("नाव टाका!"); }
+        function navigateTo(targetId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(targetId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function openPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            if(id === 'finance-page') fetchStats();
+        async function commitMilkData() {
+            const l = parseFloat(document.getElementById('in-lit').value);
+            const r = parseFloat(document.getElementById('in-rat').value);
+            if(!l || !r) return alert("सर्व माहिती भरणे आवश्यक आहे!");
+
+            try {
+                await db.collection("milk_records").add({
+                    liters: l, rate: r, total: l*r,
+                    created_at: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert("✅ नोंद यशस्वीरित्या पूर्ण झाली!");
+                document.getElementById('in-lit').value = "";
+            } catch (e) { alert("Error: " + e.message); }
         }
 
-        function saveMilkData() {
-            const l = parseFloat(document.getElementById('lit-val').value);
-            const r = parseFloat(document.getElementById('rate-val').value);
-            if(!l || !r) return alert("सर्व रकाने भरा!");
-            db.collection("milk_records").add({
-                lit: l, rat: r, tot: l*r,
-                time: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                alert("नोंद यशस्वी!");
-                document.getElementById('lit-val').value = "";
-                fetchStats();
-            });
-        }
-
-        function fetchStats() {
+        function loadRealTimeStats() {
             db.collection("milk_records").onSnapshot(snap => {
-                let sl = 0, st = 0;
-                snap.forEach(doc => { sl += doc.data().lit; st += doc.data().tot; });
-                document.getElementById('total-milk').innerText = sl.toFixed(1) + " लिटर";
-                document.getElementById('total-cash').innerText = "₹ " + st.toFixed(0);
+                let tl = 0, ta = 0;
+                snap.forEach(doc => { 
+                    tl += (doc.data().liters || 0); 
+                    ta += (doc.data().total || 0); 
+                });
+                document.getElementById('disp-lit').innerText = tl.toFixed(1) + " लिटर";
+                document.getElementById('disp-amt').innerText = "₹ " + ta.toFixed(0);
             });
         }
     </script>
