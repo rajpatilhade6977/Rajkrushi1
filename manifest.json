@@ -1,0 +1,17 @@
+{
+  "name": "Krushiraj - Gapak Dairy",
+  "short_name": "कृषिराज",
+  "description": "Smart Dairy and Livestock Management by Rajesh Hade",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#e6f7ef",
+  "theme_color": "#2d6a4f",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/8150/8150114.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
