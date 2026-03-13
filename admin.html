@@ -2,94 +2,60 @@
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Krushiraj</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        :root { --admin-bg: #0f172a; --accent: #3b82f6; --white: #ffffff; }
-        body { background-color: #f8fafc; font-family: sans-serif; padding: 0; margin: 0; }
-        .hidden { display: none !important; }
-        
-        /* Lock Screen */
-        #lock-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--admin-bg); display: flex; justify-content: center; align-items: center; z-index: 1000; color: white; }
-        .lock-card { background: #1e293b; padding: 30px; border-radius: 15px; text-align: center; width: 90%; max-width: 350px; }
-        input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 8px; border: none; outline: none; text-align: center; }
-        
-        header { background: var(--admin-bg); color: white; padding: 15px; text-align: center; }
-        .container { padding: 15px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; border-top: 4px solid var(--accent); }
-        label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
-        button { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #2d6a4f; color: white; font-weight: bold; cursor: pointer; border: none; }
     </style>
 </head>
 <body>
-
-    <div id="lock-screen">
-        <div class="lock-card">
-            <i class="fas fa-user-shield" style="font-size: 40px;"></i>
-            <h3>ऍडमिन लॉगिन</h3>
-            <input type="password" id="admin_pass" placeholder="पासवर्ड टाका">
-            <button onclick="login()">प्रवेश करा</button>
-        </div>
+    <div id="login-section" class="box">
+        <h2>Admin Login</h2>
+        <input type="password" id="pass" placeholder="पासवर्ड टाका">
+        <button onclick="login()">आत जा</button>
     </div>
 
-    <div id="admin-panel" class="hidden">
-        <header><h1>कृषिराज Control Panel</h1></header>
-        <div class="container">
-            <div class="card">
-                <h3><i class="fas fa-plus"></i> नवीन प्रॉडक्ट जोडा</h3><br>
-                <label>प्रॉडक्ट नाव</label><input type="text" id="p_name" placeholder="उदा. गावरान तूप">
-                <label>किंमत</label><input type="number" id="p_price" placeholder="उदा. 650">
-                <label>फोटो निवडा</label><input type="file" id="p_file" accept="image/*">
-                <button onclick="uploadToFirebase()">शॉपमध्ये लाईव्ह करा</button>
-            </div>
-        </div>
+    <div id="upload-section" class="box" style="display:none;">
+        <h3>नवीन प्रॉडक्ट टाका</h3>
+        <input type="text" id="p-name" placeholder="प्रॉडक्टचे नाव">
+        <input type="number" id="p-price" placeholder="किंमत (₹)">
+        <input type="text" id="p-img" placeholder="फोटोची लिंक (URL)">
+        <button onclick="upload()">मार्केटमध्ये पाठवा</button>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-storage-compat.js"></script>
-
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAUuQOnp7aLXmdQWf5t18L1Fk6Fivjtlc4",
-            authDomain: "krushiraj.firebaseapp.com",
-            projectId: "krushiraj",
-            storageBucket: "krushiraj.firebasestorage.app",
-            appId: "1:493168112210:web:db46ade9ed23fd4de8258b"
+            projectId: "krushiraj"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         function login() {
-            const pass = document.getElementById('admin_pass').value;
-            if(pass === "Raj@123") { // तुमचा पासवर्ड
-                document.getElementById('lock-screen').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
+            if(document.getElementById('pass').value === "Raj@123") {
+                document.getElementById('login-section').style.display = "none";
+                document.getElementById('upload-section').style.display = "block";
             } else { alert("चुकीचा पासवर्ड!"); }
         }
 
-        async function uploadToFirebase() {
-            const file = document.getElementById('p_file').files[0];
-            const name = document.getElementById('p_name').value;
-            const price = document.getElementById('p_price').value;
+        function upload() {
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const img = document.getElementById('p-img').value;
+            if(!name || !price || !img) return alert("सर्व माहिती भरा!");
 
-            if(!file || !name) return alert("सर्व माहिती भरा!");
-
-            alert("अपलोड सुरू आहे...");
-            const ref = storage.ref('products/' + file.name);
-            await ref.put(file);
-            const url = await ref.getDownloadURL();
-
-            await db.collection("products").add({
-                name: name,
-                price: price,
-                image: url,
+            db.collection("products").add({
+                name: name, price: price, image: img,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                alert("प्रॉडक्ट मार्केटमध्ये दिसेल!");
+                location.reload();
             });
-            alert("✅ प्रॉडक्ट यशस्वीरीत्या जोडले!");
-            location.reload();
         }
     </script>
 </body>
