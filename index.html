@@ -10,63 +10,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root { --primary: #2d6a4f; --bg: #e6f7ef; --white: #ffffff; }
+        :root { --primary: #2d6a4f; --bg: #e6f7ef; --white: #ffffff; --accent: #0ea5e9; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg); padding-bottom: 80px; }
+        body { background-color: var(--bg); padding-bottom: 80px; overflow-x: hidden; }
         .hidden { display: none !important; }
 
-        /* Dashboard UI */
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
-        .card { background: white; border-radius: 12px; padding: 20px 10px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: none; border-left: 5px solid var(--primary); }
-        .card i { font-size: 30px; margin-bottom: 8px; color: var(--primary); }
-        .card h3 { font-size: 14px; font-weight: bold; color: #333; }
-        
         /* Layouts */
-        header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; position: sticky; top: 0; z-index: 100; }
+        header { background: var(--primary); color: white; padding: 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .section-header { background: white; padding: 15px; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #ddd; }
         .form-container { background: white; padding: 20px; margin: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
         
-        /* Inputs */
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-        .btn-submit { width: 100%; background: var(--primary); color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        /* Dashboard Grid */
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        .card { background: white; border-radius: 12px; padding: 20px 10px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: none; border-left: 5px solid var(--primary); transition: 0.2s; }
+        .card:active { transform: scale(0.95); }
+        .card i { font-size: 28px; margin-bottom: 8px; color: var(--primary); }
+        .card h3 { font-size: 13px; font-weight: bold; color: #333; }
+        .card p.sub { font-size: 10px; color: #888; margin-top: 4px; }
+
+        /* Inputs & Buttons */
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; outline: none; font-size: 14px; }
+        .btn-submit { width: 100%; background: var(--primary); color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .mic-btn { background: #fee2e2; color: #ef4444; border: none; border-radius: 8px; padding: 10px; margin-left: 5px; cursor: pointer; }
 
+        /* Market Shop */
+        #market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        .prod-card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
+        .prod-card img { width: 100%; height: 110px; object-fit: cover; }
+
         /* Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px; border-top-left-radius: 20px; border-top-right-radius: 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); }
-        .nav-item { border: none; background: none; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px; border-top-left-radius: 20px; border-top-right-radius: 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .nav-item { border: none; background: none; color: #666; font-size: 11px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
         .nav-item.active { color: var(--primary); font-weight: bold; }
     </style>
 </head>
-<body onload="checkProfile()">
+<body onload="initApp()">
 
     <div id="profile-overlay">
-        <header><h2>Krushiraj Setup</h2></header>
-        <div class="form-container" style="text-align: center;">
-            <i class="fas fa-user-circle" style="font-size: 50px; color: var(--primary);"></i>
-            <p style="margin: 15px 0;">आपले स्वागत आहे! आधी तुमची माहिती भरा.</p>
-            <input type="text" id="user_name" placeholder="तुमचे पूर्ण नाव">
-            <button class="btn-submit" onclick="completeSetup()">ॲप सुरू करा</button>
+        <header><h2>कृषिराज (Krushiraj)</h2></header>
+        <div class="form-container" style="text-align: center; margin-top: 50px;">
+            <i class="fas fa-user-circle" style="font-size: 60px; color: var(--primary);"></i>
+            <h3 style="margin: 15px 0;">आपले स्वागत आहे!</h3>
+            <p style="font-size: 13px; color: #666; margin-bottom: 20px;">GAPAK DAIRY FARM GOHGAON HADE</p>
+            <input type="text" id="user_name_reg" placeholder="तुमचे नाव टाका">
+            <button class="btn-submit" onclick="setupApp()">ॲप सुरू करा</button>
         </div>
     </div>
 
     <div id="main-app" class="hidden">
         <header>
-            <h1 style="font-size: 18px;">कृषिराज - Gapak Dairy Farm</h1>
-            <p id="user_id_display" style="font-size: 10px; opacity: 0.8;"></p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: left;">
+                    <h1 style="font-size: 18px;">कृषिराज</h1>
+                    <p style="font-size: 9px; opacity: 0.8;">GAPAK DAIRY FARM</p>
+                </div>
+                <div id="user_uid" style="font-size: 10px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 10px;">ID: ...</div>
+            </div>
         </header>
 
         <div id="home-view" class="view">
-            <div style="background: #fef08a; padding: 10px; margin: 15px; border-radius: 10px; font-size: 12px; text-align: center;">
+            <div style="background: #fef08a; padding: 10px; margin: 15px; border-radius: 10px; font-size: 12px; text-align: center; border: 1px solid #fde047;">
                 📢 उत्तम प्रतीचे पशुखाद्य उपलब्ध! संपर्क: 9876543210
             </div>
             
             <main class="dashboard-grid">
-                <div class="card" onclick="switchTab('animal-view')"><i class="fas fa-cow"></i><h3>पशुपालन</h3></div>
-                <div class="card" onclick="switchTab('finance-view')"><i class="fas fa-book"></i><h3>हिशोब डायरी</h3></div>
-                <div class="card" onclick="switchTab('market-view')"><i class="fas fa-store"></i><h3>मार्केट</h3></div>
-                <div class="card" onclick="switchTab('forum-view')"><i class="fas fa-users"></i><h3>फोरम</h3></div>
-                <div class="card" onclick="switchTab('vital-view')"><i class="fas fa-baby-carriage"></i><h3>जन्म-मृत्यू</h3></div>
-                <div class="card" onclick="switchTab('help-view')"><i class="fas fa-info-circle"></i><h3>मदत केंद्र</h3></div>
+                <div class="card" onclick="switchTab('animal-view')"><i class="fas fa-paw"></i><h3>पशुपालन</h3><p class="sub">जनावरे नोंदणी</p></div>
+                <div class="card" onclick="switchTab('finance-view')"><i class="fas fa-book"></i><h3>हिशोब डायरी</h3><p class="sub">दूध नोंद व नफा</p></div>
+                <div class="card" onclick="switchTab('market-view')"><i class="fas fa-store"></i><h3>मार्केट</h3><p class="sub">खरेदी-विक्री</p></div>
+                <div class="card" onclick="openWeather()"><i class="fas fa-cloud-sun-rain" style="color:var(--accent);"></i><h3>हवामान</h3><p class="sub">लाईव्ह अंदाज</p></div>
+                <div class="card" onclick="switchTab('vital-view')"><i class="fas fa-baby-carriage" style="color:#ef4444;"></i><h3>जन्म-मृत्यू</h3><p class="sub">रेकॉर्ड</p></div>
+                <div class="card" onclick="switchTab('help-view')"><i class="fas fa-video" style="color:#8b5cf6;"></i><h3>मदत केंद्र</h3><p class="sub">व्हिडिओ मार्गदर्शक</p></div>
             </main>
         </div>
 
@@ -74,43 +87,57 @@
             <div class="section-header"><i class="fas fa-arrow-left" onclick="switchTab('home-view')"></i> जनावरे नोंदणी</div>
             <div class="form-container">
                 <label>जनावराचा प्रकार</label>
-                <select id="a_type" onchange="genId()">
+                <select id="a_type" onchange="genAnimalId()">
                     <option value="गाय">गाय</option><option value="म्हैस">म्हैस</option><option value="बैल">बैल</option>
-                    <option value="कालवड">कालवड</option><option value="शेळी">शेळी</option>
+                    <option value="कालवड">कालवड</option><option value="शेळी">शेळी</option><option value="कोंबडी">कोंबडी (पोल्ट्री)</option>
                 </select>
-                <div id="id_box" class="hidden" style="background:#d1fae5; padding:10px; text-align:center; margin:10px 0; border-radius:8px;">ID: <strong id="id_val"></strong></div>
-                <label>नाव (बोलून टाईप करा)</label>
-                <div style="display: flex;">
-                    <input type="text" id="a_name" placeholder="लक्ष्मी, कपिला...">
-                    <button class="mic-btn" onclick="startVoice('a_name')"><i class="fas fa-microphone"></i></button>
+                <div id="id_box" class="hidden" style="background:#d1fae5; padding:10px; text-align:center; margin:10px 0; border-radius:8px; color:var(--primary); font-weight:bold;">ID: <span id="id_val"></span></div>
+                <label>नाव (बोलून लिहा)</label>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="a_name" placeholder="उदा. लक्ष्मी">
+                    <button class="mic-btn" onclick="startMic('a_name')"><i class="fas fa-microphone"></i></button>
                 </div>
                 <button class="btn-submit" onclick="alert('नोंदणी यशस्वी!')">सेव्ह करा</button>
             </div>
         </div>
 
         <div id="finance-view" class="view hidden">
-            <div class="section-header"><i class="fas fa-arrow-left" onclick="switchTab('home-view')"></i> हिशोब व नफा-तोटा</div>
+            <div class="section-header"><i class="fas fa-arrow-left" onclick="switchTab('home-view')"></i> हिशोब डायरी</div>
             <div class="form-container" style="background:var(--primary); color:white; text-align:center;">
-                <p>या महिन्याचा नफा</p><h2>₹ १५,०००</h2>
+                <p style="font-size:12px; opacity:0.8;">या महिन्याचा एकूण हिशोब</p>
+                <h2 id="total_milk_sum">० लिटर</h2>
+                <h3 id="total_amt_sum">₹ ०</h3>
             </div>
             <div class="form-container">
-                <label>उत्पन्न/खर्च</label>
-                <input type="number" placeholder="रक्कम टाका">
-                <button class="btn-submit">नोंदवा</button>
+                <label>दूध (लिटर)</label><input type="number" id="m_liters" step="0.1">
+                <label>दर (Rate)</label><input type="number" id="m_rate">
+                <button class="btn-submit" onclick="saveMilkData()">नोंद जतन करा</button>
+            </div>
+        </div>
+
+        <div id="weather-view" class="view hidden">
+            <div class="section-header"><i class="fas fa-arrow-left" onclick="switchTab('home-view')"></i> हवामान अंदाज</div>
+            <div class="form-container" style="background: linear-gradient(to bottom, #4facfe, #00f2fe); color:white; text-align:center; border:none;">
+                <h3 id="w-city">गोहगाव (Buldhana)</h3>
+                <h1 style="font-size: 48px; margin:10px 0;" id="w-temp">--°C</h1>
+                <p id="w-desc">लोड होत आहे...</p>
+                <div style="display:flex; justify-content:space-around; margin-top:20px; font-size:13px;">
+                    <span><i class="fas fa-tint"></i> <p id="w-hum">--%</p></span>
+                    <span><i class="fas fa-wind"></i> <p id="w-wind">-- km/h</p></span>
+                </div>
             </div>
         </div>
 
         <div id="market-view" class="view hidden">
-            <div class="section-header"><i class="fas fa-arrow-left" onclick="switchTab('home-view')"></i> कृषिराज शॉप</div>
-            <div id="market-grid" style="padding:15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                </div>
+            <div class="section-header"><i class="fas fa-arrow-left" onclick="switchTab('home-view')"></i> कृषिराज मार्केट</div>
+            <div id="market-grid"></div>
         </div>
 
         <nav class="bottom-nav">
-            <button class="nav-item active" onclick="switchTab('home-view')"><i class="fas fa-home"></i>मुख्य</button>
-            <button class="nav-item" onclick="switchTab('animal-view')"><i class="fas fa-paw"></i>जनावरे</button>
-            <button class="nav-item" onclick="switchTab('market-view')"><i class="fas fa-store"></i>मार्केट</button>
-            <button class="nav-item" onclick="switchTab('forum-view')"><i class="fas fa-comments"></i>फोरम</button>
+            <button class="nav-item active" id="nav-home" onclick="switchTab('home-view')"><i class="fas fa-home"></i>मुख्य</button>
+            <button class="nav-item" id="nav-animal" onclick="switchTab('animal-view')"><i class="fas fa-paw"></i>जनावरे</button>
+            <button class="nav-item" id="nav-market" onclick="switchTab('market-view')"><i class="fas fa-store"></i>मार्केट</button>
+            <button class="nav-item" id="nav-finance" onclick="switchTab('finance-view')"><i class="fas fa-book"></i>हिशोब</button>
         </nav>
     </div>
 
@@ -118,7 +145,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // --- Firebase Config ---
+        // --- 🔗 Firebase Config (Already Fixed by Gemini) ---
         const firebaseConfig = {
             apiKey: "AIzaSyAUuQOnp7aLXmdQWf5t18L1Fk6Fivjtlc4",
             authDomain: "krushiraj.firebaseapp.com",
@@ -129,63 +156,114 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // UI Logic
-        function checkProfile() {
-            if(localStorage.getItem('user_ok')) {
+        // 1. App Initialization
+        function initApp() {
+            if(localStorage.getItem('krushi_user_done')) {
                 document.getElementById('profile-overlay').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
-                document.getElementById('user_id_display').innerText = "UID: " + localStorage.getItem('user_id');
+                document.getElementById('user_uid').innerText = "UID: " + localStorage.getItem('krushi_uid');
             }
         }
 
-        function completeSetup() {
-            const name = document.getElementById('user_name').value;
-            if(!name) return alert("नाव टाका!");
+        function setupApp() {
+            const name = document.getElementById('user_name_reg').value;
+            if(!name) return alert("कृपया तुमचे नाव टाका!");
             const uid = "KRU-" + Math.floor(1000 + Math.random() * 9000);
-            localStorage.setItem('user_ok', 'true');
-            localStorage.setItem('user_id', uid);
-            checkProfile();
+            localStorage.setItem('krushi_user_done', 'true');
+            localStorage.setItem('krushi_uid', uid);
+            initApp();
         }
 
+        // 2. Navigation
         function switchTab(id) {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            if(id === 'market-view') loadMarket();
+            
+            // Active Nav Styling
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const baseId = id.split('-')[0];
+            const navBtn = document.getElementById('nav-' + baseId);
+            if(navBtn) navBtn.classList.add('active');
+
+            if(id === 'market-view') loadLiveMarket();
+            if(id === 'finance-view') loadMilkStats();
             window.scrollTo(0,0);
         }
 
-        function startVoice(tid) {
+        // 3. Voice Support
+        function startMic(tid) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if(!SpeechRecognition) return alert("तुमच्या फोनमध्ये व्हॉइस सपोर्ट नाही.");
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'mr-IN';
-            recognition.start();
-            recognition.onresult = (event) => {
-                document.getElementById(tid).value = event.results[0][0].transcript;
-            };
+            if(!SpeechRecognition) return alert("Browser voice support missing.");
+            const rec = new SpeechRecognition();
+            rec.lang = 'mr-IN';
+            rec.start();
+            rec.onresult = (e) => { document.getElementById(tid).value = e.results[0][0].transcript; };
         }
 
-        function genId() {
-            const t = document.getElementById('a_type').value;
-            document.getElementById('id_val').innerText = (t === 'गाय' ? 'COW-' : 'BUF-') + Math.floor(1000+Math.random()*9000);
-            document.getElementById('id_box').classList.remove('hidden');
+        // 4. Weather Function
+        async function openWeather() {
+            switchTab('weather-view');
+            const apiKey = "b71a17960359f1389bc303534b4695b2";
+            try {
+                const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Buldhana&appid=${apiKey}&units=metric&lang=hi`);
+                const data = await res.json();
+                document.getElementById('w-temp').innerText = Math.round(data.main.temp) + "°C";
+                document.getElementById('w-desc').innerText = data.weather[0].description;
+                document.getElementById('w-hum').innerText = data.main.humidity + "%";
+                document.getElementById('w-wind').innerText = data.wind.speed + " km/h";
+            } catch (e) { console.log(e); }
         }
 
-        function loadMarket() {
+        // 5. Milk Management
+        function saveMilkData() {
+            const lit = parseFloat(document.getElementById('m_liters').value);
+            const rat = parseFloat(document.getElementById('m_rate').value);
+            if(!lit || !rat) return alert("माहिती अपूर्ण आहे!");
+            db.collection("milk_records").add({
+                liters: lit,
+                rate: rat,
+                total: lit * rat,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                alert("नोंद यशस्वी!");
+                document.getElementById('m_liters').value = "";
+                loadMilkStats();
+            });
+        }
+
+        function loadMilkStats() {
+            db.collection("milk_records").onSnapshot(snap => {
+                let l = 0, a = 0;
+                snap.forEach(doc => { l += doc.data().liters; a += doc.data().total; });
+                document.getElementById('total_milk_sum').innerText = l.toFixed(1) + " लिटर";
+                document.getElementById('total_amt_sum').innerText = "₹ " + a.toFixed(0);
+            });
+        }
+
+        // 6. Market Loader
+        function loadLiveMarket() {
             db.collection("products").onSnapshot(snap => {
                 const grid = document.getElementById('market-grid');
                 grid.innerHTML = "";
                 snap.forEach(doc => {
                     const p = doc.data();
-                    grid.innerHTML += `<div style="background:white; border-radius:10px; overflow:hidden;">
-                        <img src="${p.image}" style="width:100%; height:100px; object-fit:cover;">
-                        <div style="padding:8px;">
-                            <h4 style="font-size:12px;">${p.name}</h4>
-                            <p style="color:green; font-weight:bold;">₹ ${p.price}</p>
-                        </div>
-                    </div>`;
+                    grid.innerHTML += `
+                        <div class="prod-card">
+                            <img src="${p.image}">
+                            <div style="padding:10px;">
+                                <h4 style="font-size:13px;">${p.name}</h4>
+                                <p style="color:green; font-weight:bold;">₹ ${p.price}</p>
+                                <button onclick="window.open('https://wa.me/919876543210')" style="width:100%; border:none; background:#25d366; color:white; padding:5px; border-radius:5px; margin-top:5px; font-size:11px;">Order</button>
+                            </div>
+                        </div>`;
                 });
             });
+        }
+
+        function genAnimalId() {
+            const t = document.getElementById('a_type').value;
+            document.getElementById('id_val').innerText = (t === 'गाय' ? 'COW-' : 'ANM-') + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('id_box').classList.remove('hidden');
         }
     </script>
 </body>
