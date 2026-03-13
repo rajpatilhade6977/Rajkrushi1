@@ -2,60 +2,238 @@
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Krushiraj</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Krushiraj - Gapak Dairy Farm</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1b4332">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
-        .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
-        button { background: #2d6a4f; color: white; font-weight: bold; cursor: pointer; border: none; }
+        :root { --p: #2d6a4f; --bg: #f0f7f4; --text: #1b4332; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
+        .hidden { display: none !important; }
+
+        /* App Header */
+        header { background: var(--p); color: white; padding: 20px 15px; text-align: center; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        /* Dashboard Cards */
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+        .card { background: white; border-radius: 18px; padding: 25px 10px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.06); border: none; cursor: pointer; transition: 0.3s; }
+        .card:active { transform: scale(0.95); background: #e8f5e9; }
+        .card i { font-size: 32px; color: var(--p); margin-bottom: 12px; display: block; }
+        .card span { font-weight: bold; font-size: 14px; }
+
+        /* Pages & Content */
+        .page { padding: 15px; animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .back-btn { background: #ddd; border: none; padding: 8px 15px; border-radius: 20px; font-size: 14px; margin-bottom: 15px; cursor: pointer; }
+        .content-box { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        /* Form Elements */
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 12px; font-size: 16px; outline: none; }
+        input:focus { border-color: var(--p); }
+        .main-btn { width: 100%; background: var(--p); color: white; padding: 15px; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .mic-btn { background: #fee2e2; color: #ef4444; border: none; padding: 12px; border-radius: 10px; margin-left: 5px; }
+
+        /* Market Shop UI */
+        .market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .prod-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .prod-card img { width: 100%; height: 120px; object-fit: cover; }
+        .prod-info { padding: 10px; text-align: center; }
+
+        /* Navigation */
+        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px; box-shadow: 0 -4px 15px rgba(0,0,0,0.08); z-index: 1000; }
+        .nav-link { background: none; border: none; color: #888; font-size: 11px; text-align: center; }
+        .nav-link.active { color: var(--p); font-weight: bold; }
     </style>
 </head>
-<body>
-    <div id="login-section" class="box">
-        <h2>Admin Login</h2>
-        <input type="password" id="pass" placeholder="पासवर्ड टाका">
-        <button onclick="login()">आत जा</button>
+<body onload="initApp()">
+
+    <div id="setup-view" style="padding: 60px 20px; text-align: center;">
+        <i class="fas fa-tractor" style="font-size: 60px; color: var(--p);"></i>
+        <h2 style="margin: 20px 0;">कृषिराज (Krushiraj)</h2>
+        <p style="color: #666; margin-bottom: 30px;">GAPAK DAIRY FARM GOHGAON HADE</p>
+        <input type="text" id="reg-name" placeholder="तुमचे नाव टाका">
+        <button class="main-btn" onclick="completeSetup()">ॲप सुरू करा</button>
     </div>
 
-    <div id="upload-section" class="box" style="display:none;">
-        <h3>नवीन प्रॉडक्ट टाका</h3>
-        <input type="text" id="p-name" placeholder="प्रॉडक्टचे नाव">
-        <input type="number" id="p-price" placeholder="किंमत (₹)">
-        <input type="text" id="p-img" placeholder="फोटोची लिंक (URL)">
-        <button onclick="upload()">मार्केटमध्ये पाठवा</button>
+    <div id="app-view" class="hidden">
+        <header>
+            <h1 style="font-size: 18px;">कृषिराज</h1>
+            <p id="user-badge" style="font-size: 9px; opacity: 0.8;"></p>
+        </header>
+
+        <div id="home-view" class="page">
+            <div style="background: #fef08a; padding: 10px; border-radius: 10px; text-align: center; margin-bottom: 15px; font-size: 12px;">
+                📢 पशुखाद्य व तुपासाठी संपर्क करा: 9876543210
+            </div>
+            <div class="dashboard">
+                <button class="card" onclick="openPage('animal-view')"><i class="fas fa-paw"></i><span>पशुपालन</span></button>
+                <button class="card" onclick="openPage('milk-view')"><i class="fas fa-book"></i><span>हिशोब डायरी</span></button>
+                <button class="card" onclick="openPage('market-view')"><i class="fas fa-store"></i><span>मार्केट</span></button>
+                <button class="card" onclick="loadWeather()"><i class="fas fa-cloud-sun"></i><span>हवामान</span></button>
+                <button class="card" onclick="openPage('vital-view')"><i class="fas fa-heartbeat"></i><span>जन्म-मृत्यू</span></button>
+                <button class="card" onclick="openPage('help-view')"><i class="fas fa-video"></i><span>मदत केंद्र</span></button>
+            </div>
+        </div>
+
+        <div id="animal-view" class="page hidden">
+            <button class="back-btn" onclick="openPage('home-view')">← मागे</button>
+            <div class="content-box">
+                <h3>पशु नोंदणी</h3>
+                <select id="animal-type">
+                    <option>गाय</option><option>म्हैस</option><option>बैल</option><option>शेळी</option>
+                </select>
+                <div style="display:flex;">
+                    <input type="text" id="animal-name" placeholder="नाव (उदा. कपिला)">
+                    <button class="mic-btn" onclick="startVoice('animal-name')"><i class="fas fa-microphone"></i></button>
+                </div>
+                <button class="main-btn" onclick="alert('नोंदणी यशस्वी!')">सेव्ह करा</button>
+            </div>
+        </div>
+
+        <div id="milk-view" class="page hidden">
+            <button class="back-btn" onclick="openPage('home-view')">← मागे</button>
+            <div class="content-box" style="background: var(--p); color: white; text-align: center;">
+                <p>या महिन्याचा हिशोब</p>
+                <h2 id="sum-milk">० लिटर</h2>
+                <h3 id="sum-amt">₹ ०</h3>
+            </div>
+            <div class="content-box">
+                <input type="number" id="m-lit" placeholder="लिटर">
+                <input type="number" id="m-rat" placeholder="दर (Rate)">
+                <button class="main-btn" onclick="saveMilk()">नोंदवा</button>
+            </div>
+        </div>
+
+        <div id="market-view" class="page hidden">
+            <button class="back-btn" onclick="openPage('home-view')">← मागे</button>
+            <div id="market-list" class="market-grid">
+                </div>
+        </div>
+
+        <div id="weather-view" class="page hidden">
+            <button class="back-btn" onclick="openPage('home-view')">← मागे</button>
+            <div class="content-box" style="background: #0ea5e9; color: white; text-align: center;">
+                <h1 id="w-temp">--°C</h1>
+                <p id="w-desc">लोड होत आहे...</p>
+                <hr style="margin: 15px 0; opacity: 0.2;">
+                <p style="font-size: 12px;">गोहगाव (Buldhana District)</p>
+            </div>
+        </div>
+
+        <nav>
+            <button class="nav-link active" onclick="openPage('home-view')"><i class="fas fa-home"></i><br>मुख्य</button>
+            <button class="nav-link" onclick="openPage('animal-view')"><i class="fas fa-cow"></i><br>जनावरे</button>
+            <button class="nav-link" onclick="openPage('market-view')"><i class="fas fa-store"></i><br>मार्केट</button>
+            <button class="nav-link" onclick="openPage('milk-view')"><i class="fas fa-book"></i><br>हिशोब</button>
+        </nav>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+
     <script>
+        // 🔗 तुमचा Firebase Config (Verified)
         const firebaseConfig = {
             apiKey: "AIzaSyAUuQOnp7aLXmdQWf5t18L1Fk6Fivjtlc4",
-            projectId: "krushiraj"
+            authDomain: "krushiraj.firebaseapp.com",
+            projectId: "krushiraj",
+            storageBucket: "krushiraj.firebasestorage.app",
+            appId: "1:493168112210:web:db46ade9ed23fd4de8258b"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        function login() {
-            if(document.getElementById('pass').value === "Raj@123") {
-                document.getElementById('login-section').style.display = "none";
-                document.getElementById('upload-section').style.display = "block";
-            } else { alert("चुकीचा पासवर्ड!"); }
+        // 1. App Control
+        function initApp() {
+            if(localStorage.getItem('user-auth')) {
+                document.getElementById('setup-view').classList.add('hidden');
+                document.getElementById('app-view').classList.remove('hidden');
+                document.getElementById('user-badge').innerText = "UID: " + Math.floor(1000 + Math.random()*9000);
+            }
         }
 
-        function upload() {
-            const name = document.getElementById('p-name').value;
-            const price = document.getElementById('p-price').value;
-            const img = document.getElementById('p-img').value;
-            if(!name || !price || !img) return alert("सर्व माहिती भरा!");
+        function completeSetup() {
+            const name = document.getElementById('reg-name').value;
+            if(name) {
+                localStorage.setItem('user-auth', 'true');
+                initApp();
+            } else { alert("नाव आवश्यक आहे!"); }
+        }
 
-            db.collection("products").add({
-                name: name, price: price, image: img,
+        function openPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            if(id === 'market-view') loadMarket();
+            if(id === 'milk-view') loadStats();
+            window.scrollTo(0,0);
+        }
+
+        // 2. Weather Logic
+        async function loadWeather() {
+            openPage('weather-view');
+            try {
+                const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Buldhana&appid=b71a17960359f1389bc303534b4695b2&units=metric&lang=mr`);
+                const data = await res.json();
+                document.getElementById('w-temp').innerText = Math.round(data.main.temp) + "°C";
+                document.getElementById('w-desc').innerText = data.weather[0].description;
+            } catch(e) { document.getElementById('w-desc').innerText = "इंटरनेट तपासा"; }
+        }
+
+        // 3. Milk Diary Logic
+        function saveMilk() {
+            const l = parseFloat(document.getElementById('m-lit').value);
+            const r = parseFloat(document.getElementById('m-rat').value);
+            if(!l || !r) return alert("माहिती भरा!");
+            db.collection("milk_records").add({
+                l: l, r: r, t: l*r,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                alert("प्रॉडक्ट मार्केटमध्ये दिसेल!");
-                location.reload();
+                alert("नोंद झाली!");
+                document.getElementById('m-lit').value = "";
+                loadStats();
             });
+        }
+
+        function loadStats() {
+            db.collection("milk_records").onSnapshot(snap => {
+                let sl = 0, st = 0;
+                snap.forEach(doc => { sl += doc.data().l; st += doc.data().t; });
+                document.getElementById('sum-milk').innerText = sl.toFixed(1) + " लिटर";
+                document.getElementById('sum-amt').innerText = "₹ " + st.toFixed(0);
+            });
+        }
+
+        // 4. Market Loader
+        function loadMarket() {
+            const list = document.getElementById('market-list');
+            list.innerHTML = "<p style='text-align:center;'>लोड होत आहे...</p>";
+            db.collection("products").onSnapshot(snap => {
+                list.innerHTML = "";
+                snap.forEach(doc => {
+                    const p = doc.data();
+                    list.innerHTML += `
+                        <div class="prod-card">
+                            <img src="${p.image}">
+                            <div class="prod-info">
+                                <h4>${p.name}</h4>
+                                <p style="color:green; font-weight:bold;">₹ ${p.price}</p>
+                                <button onclick="window.open('https://wa.me/919876543210')" style="background:#25d366; color:white; border:none; padding:5px; border-radius:5px; margin-top:5px; font-size:11px;">ऑर्डर</button>
+                            </div>
+                        </div>`;
+                });
+            });
+        }
+
+        // 5. Voice Logic
+        function startVoice(tid) {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'mr-IN';
+            recognition.start();
+            recognition.onresult = (e) => { document.getElementById(tid).value = e.results[0][0].transcript; };
         }
     </script>
 </body>
