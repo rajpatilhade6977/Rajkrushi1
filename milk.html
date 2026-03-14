@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Milk Analytics</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<h2>Milk Production Graph</h2>
+
+<canvas id="chart"></canvas>
+
+<script>
+
+const ctx=document.getElementById("chart")
+
+new Chart(ctx,{
+type:"line",
+data:{
+labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+datasets:[{
+label:"Milk Liters",
+data:[22,25,23,28,30,27,26]
+}]
+}
+})
+
+</script>
+
+</body>
+</html>

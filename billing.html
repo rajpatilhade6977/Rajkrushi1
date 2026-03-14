@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Milk Billing</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+</head>
+
+<body>
+
+<h2>Customer Milk Billing</h2>
+
+<input id="name" placeholder="Customer Name">
+<input id="lit" placeholder="Liters">
+<input id="rate" placeholder="Rate">
+
+<button onclick="saveBill()">Save Bill</button>
+
+<script>
+
+function saveBill(){
+
+const total=lit.value*rate.value
+
+db.collection("bills").add({
+name:name.value,
+lit:lit.value,
+rate:rate.value,
+total:total
+})
+
+}
+
+</script>
+
+</body>
+</html>

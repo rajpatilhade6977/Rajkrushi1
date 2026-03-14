@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Farmer Marketplace</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+</head>
+
+<body>
+
+<h2>Marketplace</h2>
+
+<input id="title" placeholder="Product">
+<input id="price" placeholder="Price">
+
+<button onclick="post()">Post</button>
+
+<div id="items"></div>
+
+<script>
+
+function post(){
+
+db.collection("market").add({
+title:title.value,
+price:price.value,
+time:Date.now()
+})
+
+}
+
+db.collection("market")
+.orderBy("time","desc")
+.onSnapshot(s=>{
+
+items.innerHTML=""
+
+s.forEach(d=>{
+
+const x=d.data()
+
+items.innerHTML+=`<p>${x.title} - ₹${x.price}</p>`
+
+})
+
+})
+
+</script>
+
+</body>
+</html>

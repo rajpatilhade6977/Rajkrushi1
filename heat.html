@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cow Heat Detection</title>
+</head>
+
+<body>
+
+<h2>Cow Heat Detector</h2>
+
+<input id="days" placeholder="Days since last heat">
+<input id="milk" placeholder="Milk drop yes/no">
+
+<button onclick="check()">Check</button>
+
+<h3 id="result"></h3>
+
+<script>
+
+function check(){
+
+if(days.value>=18 && milk.value=="yes"){
+result.innerText="Cow likely in heat"
+}else{
+result.innerText="No heat detected"
+}
+
+}
+
+</script>
+
+</body>
+</html>

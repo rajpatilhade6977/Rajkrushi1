@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Farmer Social</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+</head>
+
+<body>
+
+<h2>Farmer Social Network</h2>
+
+<input id="post">
+
+<button onclick="send()">Post</button>
+
+<div id="feed"></div>
+
+<script>
+
+function send(){
+
+db.collection("posts").add({
+text:post.value,
+time:Date.now()
+})
+
+}
+
+db.collection("posts")
+.orderBy("time","desc")
+.onSnapshot(s=>{
+
+feed.innerHTML=""
+
+s.forEach(d=>{
+
+feed.innerHTML+=`<p>${d.data().text}</p>`
+
+})
+
+})
+
+</script>
+
+</body>
+</html>
